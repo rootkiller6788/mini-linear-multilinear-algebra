@@ -1,45 +1,35 @@
-/-
-# MiniMultilinearForm.Benchmark.OperationsBench
-
-Benchmarks for combined/integrated operations:
-change of basis, pullback, duality, matrix conversion.
--/
-
-import MiniMultilinearForm.Functorial.Pullback
+import MiniMultilinearForm.Core.Basic
 
 namespace MiniMultilinearForm.Benchmark
 
 open MiniMultilinearForm
-open MiniVectorSpaceCore
 
-/-! ## Benchmark: Change of Basis -/
+variable {F : Field}
 
-/-- Benchmark change of basis transformation for bilinear forms. -/
-def bench_changeOfBasis (n : Nat) (iters : Nat) : IO Unit :=
-  IO.println s!"Change of basis benchmark: n={n}, {iters} iterations (stub)"
+/-- Addition of two bilinear forms: O(n²) for n×n matrix addition. -/
+def additionComplexity (n : Nat) : Nat := n * n
 
-/-! ## Benchmark: Pullback -/
+/-- Scalar multiplication of bilinear form: O(n²) to multiply each entry. -/
+def scalarMultiplicationComplexity (n : Nat) : Nat := n * n
 
-/-- Benchmark pullback of bilinear forms along linear maps. -/
-def bench_pullback (n m : Nat) (iters : Nat) : IO Unit :=
-  IO.println s!"Pullback benchmark: n={n}, m={m}, {iters} iterations (stub)"
+/-- Symmetrization of a general bilinear form: B_sym = (B + B^T)/2.
+    O(n²) operations (add then divide by 2 for each entry). -/
+def symmetrizationComplexity (n : Nat) : Nat := n * n
 
-/-! ## Benchmark: Dual Map Construction -/
+/-- Alternation of a general bilinear form: B_alt = (B - B^T)/2.
+    Same complexity as symmetrization: O(n²). -/
+def alternationComplexity (n : Nat) : Nat := n * n
 
-/-- Benchmark construction of the dual map V→W* from a bilinear form. -/
-def bench_dualMap (n m : Nat) (iters : Nat) : IO Unit :=
-  IO.println s!"Dual map construction benchmark: n={n}, m={m}, {iters} iterations (stub)"
+/-- Pullback along a linear map T: (T*B)(x,y) = B(Tx, Ty).
+    If T is represented as an m×n matrix and B is n×n,
+    then evaluating T*B costs O(m²·n) for the pullback on a pair. -/
+def pullbackComplexity (m n : Nat) : Nat := m * m * n
 
-/-! ## Benchmark: Matrix Representation -/
+/-- Contraction of a (k+1)-linear form to a k-linear form:
+    O(dim(V)^k) operations if evaluated naively. -/
+def contractionComplexity (dim k : Nat) : Nat :=
+  match k with
+  | 0 => 1
+  | k'+1 => dim * contractionComplexity dim k'
 
-/-- Benchmark conversion between bilinear forms and matrices. -/
-def bench_matrixRepresentation (n : Nat) (iters : Nat) : IO Unit :=
-  IO.println s!"Matrix representation benchmark: n={n}, {iters} iterations (stub)"
-
-/-! ## Benchmark: Full Pipeline -/
-
-/-- Benchmark full pipeline: diagonalize → signature → classify. -/
-def bench_fullPipeline (n : Nat) (iters : Nat) : IO Unit :=
-  IO.println s!"Full pipeline benchmark: n={n}, {iters} iterations (stub)"
-
-#eval "Benchmark.OperationsBench: integrated operation benchmarks"
+end MiniMultilinearForm.Benchmark

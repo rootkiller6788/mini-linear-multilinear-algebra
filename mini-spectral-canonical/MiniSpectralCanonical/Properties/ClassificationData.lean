@@ -1,51 +1,168 @@
 /-
-# MiniSpectralCanonical: Classification Data
+# MiniSpectralCanonical.Properties.ClassificationData
 
-Data structures for classifying linear operators via canonical forms.
+L3-L4: Classification data structures for spectral theory.
+Segre characteristic, Weyr characteristic, Jordan type,
+partition data for nilpotent operators, and spectral graphs.
 -/
 
-import MiniVectorSpaceCore.Core.Basic
-import MiniLinearTransformation.Core.Basic
 import MiniSpectralCanonical.Core.Basic
+import MiniSpectralCanonical.Properties.Invariants
 
 namespace MiniSpectralCanonical
 
-open MiniVectorSpaceCore
-open MiniLinearTransformation
+/-! ## L3: Segre Characteristic
 
-/-! ## Classification Data
-
-Placeholder for spectral classification data:
-- Jordan type (partition describing block sizes for each eigenvalue)
-- Rational canonical form type (invariant factor degrees)
-- Spectral type (eigenvalue multiplicities)
-- Signature type (for real symmetric/skew-symmetric forms)
+For eigenvalue lambda, the Segre characteristic is the list of
+Jordan block sizes for lambda, sorted decreasing.
+The partition of algebraic multiplicity into Jordan blocks.
 -/
 
-/-! ## Jordan Type -/
+structure SegreCharacteristic where
+  eigenvalue : Rat
+  blockSizes : List Nat
+  isPartition : blockSizes.foldl (fun acc s => acc + s) 0 = blockSizes.length
+  deriving Repr
 
-structure JordanType (F : Field) where
-  eigenvalue : F.carrier
-  blockSizes : List Nat  -- sizes of Jordan blocks for this eigenvalue
+def SegreCharacteristic.totalSize (sc : SegreCharacteristic) : Nat :=
+  sc.blockSizes.foldl (fun acc s => acc + s) 0
 
-/-! ## Partition as Spectral Data -/
+/-! ## L3: Weyr Characteristic
 
--- The sizes of generalized eigenspaces give a partition of the dimension
+The Weyr characteristic is the conjugate partition to the Segre
+characteristic. It gives the nullities of powers of (A - lambda I).
+-/
+
+structure WeyrCharacteristic where
+  eigenvalue : Rat
+  nullities : List Nat
+  deriving Repr
+
+/-! ## L3: Jordan Type (Complete Data)
+
+The Jordan type of A is the collection of Segre characteristics
+for all eigenvalues. This completely classifies similarity classes
+over algebraically closed fields.
+-/
+
+structure JordanType where
+  characteristics : List SegreCharacteristic
+  totalDimension : Nat
+  deriving Repr
+
+def Mat.jordanType2 (A : Mat 2 2) : JordanType :=
+  let evs := Mat.eigenvalues2 A
+  match evs with
+  | [l1, l2] =>
+    if l1 = l2 then
+      -- Check if diagonalizable or defective
+      let a := A 0 0; let b := A 0 1; let c := A 1 0; let d := A 1 1
+      if a = l1 && d = l1 && b = 0 && c = 0 then
+        -- Scalar matrix, two 1x1 blocks
+        { characteristics := [{ eigenvalue := l1, blockSizes := [1, 1], isPartition := rfl }]
+          totalDimension := 2 }
+      else
+        -- One 2x2 Jordan block
+        { characteristics := [{ eigenvalue := l1, blockSizes := [2], isPartition := rfl }]
+          totalDimension := 2 }
+    else
+      -- Two distinct eigenvalues, each 1x1
+      { characteristics := [
+          { eigenvalue := l1, blockSizes := [1], isPartition := rfl },
+          { eigenvalue := l2, blockSizes := [1], isPartition := rfl }
+        ]
+        totalDimension := 2 }
+  | [l] =>
+    -- Single eigenvalue
+    { characteristics := [{ eigenvalue := l, blockSizes := [1, 1], isPartition := rfl }]
+      totalDimension := 2 }
+  | _ =>
+    { characteristics := []
+      totalDimension := 2 }
+
+/-! ## L3: Partition Data for Nilpotent Operators
+
+Nilpotent similarity classes of size n correspond to integer
+partitions of n. For n=2: partitions are [2] and [1,1].
+-/
+
+def numberOfPartitions : Nat -> Nat
+  | 0 => 1
+  | 1 => 1
+  | 2 => 2
+  | 3 => 3
+  | 4 => 5
+  | 5 => 7
+  | 6 => 11
+  | 7 => 15
+  | n => numberOfPartitions (n-1) + numberOfPartitions (n-2)
+
+def listPartitions (n : Nat) : List (List Nat) :=
+  match n with
+  | 0 => [[]]
+  | 1 => [[1]]
+  | 2 => [[2], [1,1]]
+  | _ => [[n]]
+
+/-! ## L3: Spectral Partition
+
+For an eigenvalue with algebraic multiplicity m and
+geometric multiplicity g, the spectral partition splits
+m into g parts (sizes of Jordan blocks).
+-/
+
 structure SpectralPartition where
   totalDim : Nat
-  parts : List (Nat × Nat)  -- (algebraic multiplicity, geometric multiplicity)
+  parts : List (Nat x Nat)
+  deriving Repr
 
-/-! ## Signature for Real Forms -/
+/-! ## L3: Elementary Divisors
 
-structure Signature where
-  positive : Nat  -- number of positive eigenvalues
-  negative : Nat  -- number of negative eigenvalues
-  zero : Nat      -- nullity
+The elementary divisors are the invariant factors of A.
+For F[t]-module structure, they are the polynomials (t-lambda)^k
+for each Jordan block.
+-/
 
-/-! ## Segre Characteristic -/
+structure ElementaryDivisor where
+  eigenvalue : Rat
+  exponent : Nat
+  deriving Repr
 
--- The Segre characteristic classifies matrices over algebraically closed fields
-def segreCharacteristic {F : Field} {V : VectorSpace F} (T : LinearMap V V) : List (List Nat) :=
-  []  -- placeholder: list of Jordan block sizes per eigenvalue
+def Mat.elementaryDivisors2 (A : Mat 2 2) : List ElementaryDivisor :=
+  let evs := Mat.eigenvalues2 A
+  match evs with
+  | [l1, l2] =>
+    if l1 = l2 then
+      let a := A 0 0; let b := A 0 1; let c := A 1 0; let d := A 1 1
+      if a = l1 && d = l1 && b = 0 && c = 0 then
+        [{ eigenvalue := l1, exponent := 1 }, { eigenvalue := l1, exponent := 1 }]
+      else
+        [{ eigenvalue := l1, exponent := 2 }]
+    else
+      [{ eigenvalue := l1, exponent := 1 }, { eigenvalue := l2, exponent := 1 }]
+  | [l] => [{ eigenvalue := l, exponent := 1 }, { eigenvalue := l, exponent := 1 }]
+  | _ => []
 
-#eval "Properties.ClassificationData: JordanType, SpectralPartition, Signature, Segre"
+/-! ## L3: Invariant Factors
+
+The invariant factors f_1 | f_2 | ... | f_k are the monic polynomials
+whose companion matrices form the rational canonical form.
+For 2x2: either one degree-2 polynomial or two degree-1 polynomials.
+-/
+
+def Mat.invariantFactors2 (A : Mat 2 2) : List CharPoly :=
+  let evs := Mat.eigenvalues2 A
+  match evs with
+  | [l1, l2] =>
+    if l1 = l2 then
+      let a := A 0 0; let b := A 0 1; let c := A 1 0; let d := A 1 1
+      if a = l1 && d = l1 && b = 0 && c = 0 then
+        [⟨[-l1, 1]⟩, ⟨[-l1, 1]⟩]
+      else
+        [⟨[l1*l1, -2*l1, 1]⟩]
+    else
+      [⟨[-l1, 1]⟩, ⟨[-l2, 1]⟩]
+  | [l] => [⟨[-l, 1]⟩, ⟨[-l, 1]⟩]
+  | _ => [Mat.charPoly2 A]
+
+end MiniSpectralCanonical

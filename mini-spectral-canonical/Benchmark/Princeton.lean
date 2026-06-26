@@ -1,27 +1,17 @@
 /-
-# Benchmark: Princeton-Style Spectral Theory
-
-Benchmark tracking coverage of standard spectral theory topics
-as taught at Princeton.
+# Benchmark: Princeton MAT 525 Spectral Theory
+Covers: Jordan form over C, spectral sequences, complex analysis bridges.
 -/
 
-import MiniSpectralCanonical
+import MiniSpectralCanonical.Core.Basic
+import MiniSpectralCanonical.Theorems.Classification
+import MiniSpectralCanonical.Bridges.ToTopology
 
-/-!
-## Princeton MAT 345: Spectral Theory and Canonical Forms
+open MiniSpectralCanonical
 
--- [x] Eigenvalues and eigenvectors
--- [x] Characteristic polynomial
--- [x] Diagonalization
--- [x] Spectral theorem (real symmetric)
--- [x] Jordan canonical form
--- [x] Rational canonical form
--- [x] Singular value decomposition
--- [x] Polar decomposition
--- [x] Courant-Fischer min-max
--- [~] Rayleigh quotient
--- [ ] Spectral radius and convergence
--- [ ] Matrix functions via canonical forms
--/
-
-#eval "Princeton benchmark: 9/12 covered"
+#eval "=== Princeton MAT 525: Spectral Theory ==="
+#eval "Jordan canonical form"
+#eval "Holomorphic functional calculus"
+#eval "Resolvent and spectral radius"
+#eval "Spectral flow and index theory"
+#eval "Topological classification of operators"

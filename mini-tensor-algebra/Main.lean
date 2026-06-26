@@ -33,3 +33,11 @@ open MiniTensorAlgebra
 
 def main : IO Unit :=
   IO.println "mini-tensor-algebra: TensorAlgebra, SymmetricAlgebra, ExteriorAlgebra"
+
+/-! ## Quick Verification -/
+
+open MiniTensorAlgebra
+
+#eval "Quick tensor dim check" ; tensProdDim 2 3 == 6
+#eval "Quick sym pow check" ; symPowDim 3 2 == 6
+#eval "Quick ext pow check" ; extPowDim 4 2 == 6

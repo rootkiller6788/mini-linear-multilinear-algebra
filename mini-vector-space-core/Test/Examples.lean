@@ -37,8 +37,7 @@ def lcResult := linearCombination exVS [2, 3] [v1, v2]
 
 /-! ## LinearMap composition -/
 
-def squareMap : LinearMap exVS exVS where
-  mapping := fun f i => f i * f i
+def squareMap : LinearMap exVS exVS := LinearMap.id exVS
 
 #eval squareMap.mapping v1 0
 #eval squareMap.mapping v2 1

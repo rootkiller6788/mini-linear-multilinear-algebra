@@ -8,6 +8,7 @@ along with bundled structures and utility definitions.
 import MiniObjectKernel.Core.Basic
 import MiniObjectKernel.Core.Objects
 import MiniVectorSpaceCore.Core.Basic
+import MiniVectorSpaceCore.Morphisms.Hom
 
 namespace MiniVectorSpaceCore
 

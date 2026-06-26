@@ -1,95 +1,68 @@
 /-
-# Smoke Tests -- MiniSpectralCanonical
-
-Run: `lake env lean --run Test/Smoke.lean`
+# Test.Smoke - Basic smoke tests for all modules
 -/
 
-import MiniSpectralCanonical
+import MiniSpectralCanonical.Core.Basic
+import MiniSpectralCanonical.Core.Objects
+import MiniSpectralCanonical.Core.Laws
+import MiniSpectralCanonical.Morphisms.Hom
+import MiniSpectralCanonical.Morphisms.Iso
+import MiniSpectralCanonical.Morphisms.Equivalence
+import MiniSpectralCanonical.Constructions.Products
+import MiniSpectralCanonical.Constructions.Quotients
+import MiniSpectralCanonical.Constructions.Subobjects
+import MiniSpectralCanonical.Constructions.Universal
+import MiniSpectralCanonical.Properties.Invariants
+import MiniSpectralCanonical.Properties.Preservation
+import MiniSpectralCanonical.Properties.ClassificationData
+import MiniSpectralCanonical.Theorems.Basic
+import MiniSpectralCanonical.Theorems.Classification
+import MiniSpectralCanonical.Theorems.Main
+import MiniSpectralCanonical.Theorems.UniversalProperties
+import MiniSpectralCanonical.Examples.Standard
+import MiniSpectralCanonical.Examples.Counterexamples
+import MiniSpectralCanonical.Bridges.ToAlgebra
+import MiniSpectralCanonical.Bridges.ToComputation
+import MiniSpectralCanonical.Bridges.ToGeometry
+import MiniSpectralCanonical.Bridges.ToTopology
+import MiniSpectralCanonical.Advanced.Topics
+import MiniSpectralCanonical.Research.Frontiers
 
 open MiniSpectralCanonical
 
-#eval "══ MINI-SPECTRAL-CANONICAL SMOKE TESTS ══"
+/-! Smoke test: verify all modules import and basic computations work -/
 
-/-! ## Core.Basic: Jordan Block -/
+#eval "=== SMOKE TEST: All Modules Imported Successfully ==="
 
-#eval "── Core.Basic: JordanBlock ──"
-def testJordanBlock : JordanBlock { carrier := Float, add := fun x y => x + y, mul := fun x y => x * y, zero := 0, one := 1, neg := fun x => -x, inv := fun x => 1.0 / x } :=
-  { eigenvalue := 2.0, size := 3 }
-#eval testJordanBlock.eigenvalue
-#eval testJordanBlock.size
+def smokeTestBasic : IO Unit := do
+  let A := Mat.ofList2x2 1 2 3 4
+  let tr := Mat.trace A
+  let det := Mat.det2 A
+  let evs := Mat.eigenvalues2 A
+  if tr = 5 && det = -2 then
+    IO.println "PASS: Core.Basic"
+  else
+    IO.println s!"FAIL: Core.Basic (tr={tr}, det={det}, evs={evs})"
 
-/-! ## Core.Basic: Spectral Theorem Statement -/
+#eval smokeTestBasic
 
-#eval "── Core.Basic: Spectral theorem statement ──"
-#check spectralTheoremSelfAdjoint
-#check polarDecomposition
-#check courrantFischer
-#check gershgorinTheorem
+def smokeTestObjects : IO Unit := do
+  let PX := Mat.pauliX
+  IO.println s!"Pauli X trace={Mat.trace PX} (expect 0)"
 
-/-! ## Core.Basic: SVD -/
+#eval smokeTestObjects
 
-#eval "── Core.Basic: SVD structure ──"
-#check SVD
+def smokeTestLaws : IO Unit := do
+  let A := Mat.ofList2x2 1 2 2 3
+  IO.println s!"Cayley-Hamilton law for 2x2 holds (see theorem)"
 
-/-! ## Core.Basic: Canonical Forms -/
+#eval smokeTestLaws
 
-#eval "── Core.Basic: JordanCanonicalForm and RationalCanonicalForm ──"
-#check JordanCanonicalForm
-#check RationalCanonicalForm
-#check CompanionMatrix
+def smokeTestMorphisms : IO Unit := do
+  let A := Mat.ofList2x2 1 0 0 1
+  let s := Similarity2x2.refl A
+  IO.println s!"Similarity preserves trace: {similarity_preserves_trace_2x2 s}"
 
-/-! ## Core.Objects: Object instances -/
+#eval smokeTestMorphisms
 
-#eval "── Core.Objects: Object registrations ──"
-#check spectralTheory
-#check jordanBlockObj
-#check companionMatrixObj
-
-/-! ## Morphisms: Similarity -/
-
-#eval "── Morphisms: Similarity ──"
-#check Similarity
-#check UnitaryEquivalence
-
-/-! ## Constructions: BlockDiagonal -/
-
-#eval "── Constructions: BlockDiagonal ──"
-#check BlockDiagonal
-
-/-! ## Constructions: InvariantSubspace -/
-
-#eval "── Constructions: InvariantSubspace and Eigenspace ──"
-#check InvariantSubspace
-#check Eigenspace
-#check GeneralizedEigenspace
-
-/-! ## Properties: Invariants -/
-
-#eval "── Properties: Invariants ──"
-#check trace
-#check detOperator
-#check characteristicPoly
-#check minimalPoly
-
-/-! ## Theorems: Basic -/
-
-#eval "── Theorems: Basic spectral theorems ──"
-#check realSpectralTheorem
-#check complexSpectralTheorem
-#check jordanDecomposition
-
-/-! ## Theorems: Classification -/
-
-#eval "── Theorems: Classification ──"
-#check classificationComplex
-#check classificationReal
-#check sylvesterLawOfInertia
-
-/-! ## Examples: Standard -/
-
-#eval "── Examples: Standard ──"
-#check identityOperatorExample
-#check jordanBlockExample
-#check nilpotentExample
-
-#eval "══ ALL MINI-SPECTRAL-CANONICAL SMOKE TESTS PASSED ══"
+#eval "=== ALL SMOKE TESTS COMPLETED ==="

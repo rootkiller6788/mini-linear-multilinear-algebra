@@ -38,3 +38,5 @@ import MiniVectorSpaceCore.Bridges.ToAlgebra
 import MiniVectorSpaceCore.Bridges.ToTopology
 import MiniVectorSpaceCore.Bridges.ToGeometry
 import MiniVectorSpaceCore.Bridges.ToComputation
+import MiniVectorSpaceCore.Dual.DualSpace
+import MiniVectorSpaceCore.Decompositions.DirectSumDecomp

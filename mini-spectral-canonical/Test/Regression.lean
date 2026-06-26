@@ -1,84 +1,39 @@
 /-
-# Regression Tests -- MiniSpectralCanonical
-
-Regression tests ensuring no breaking changes.
+# Test.Regression - Regression tests for spectral invariants
 -/
 
-import MiniSpectralCanonical
+import MiniSpectralCanonical.Core.Basic
+import MiniSpectralCanonical.Properties.Invariants
+import MiniSpectralCanonical.Theorems.Basic
 
 open MiniSpectralCanonical
 
-/-! ## Basic Definitions Exist -/
+/-! ## Regression Test 1: Trace-Det formula for diagonal matrix -/
 
--- Verify JordanBlock type is usable
-#check JordanBlock
+def regressionTest1 : IO Unit := do
+  let D := Mat.diagonal2 3 7
+  let tr := Mat.trace D
+  let det := Mat.det2 D
+  let evs := Mat.eigenvalues2 D
+  IO.println s!"Diagonal(3,7): tr={tr} (expect 10), det={det} (expect 21), evs={evs}"
 
--- Verify canonical form structures
-#check JordanCanonicalForm
-#check RationalCanonicalForm
-#check CompanionMatrix
+#eval regressionTest1
 
--- Verify SVD
-#check SVD
+/-! ## Regression Test 2: JCF of nilpotent -/
 
--- Verify spectral theorem statements
-#check spectralTheoremSelfAdjoint
-#check polarDecomposition
-#check spectralRadius
-#check courantFischer
-#check gershgorinTheorem
+def regressionTest2 : IO Unit := do
+  let N := Mat.jordanBlockMatrix 0 2
+  let tr := Mat.trace N
+  let det := Mat.det2 N
+  IO.println s!"Nilpotent J_2(0): tr={tr} (expect 0), det={det} (expect 0)"
 
--- Verify Morphisms
-#check Similarity
-#check UnitaryEquivalence
-#check Congruence
+#eval regressionTest2
 
--- Verify Constructions
-#check BlockDiagonal
-#check InvariantSubspace
-#check Eigenspace
-#check GeneralizedEigenspace
-#check SpectralSubspace
+/-! ## Regression Test 3: Symmetric matrix has real eigenvalues -/
 
--- Verify Properties
-#check trace
-#check detOperator
-#check characteristicPoly
-#check minimalPoly
-#check algebraicMultiplicity
-#check geometricMultiplicity
+def regressionTest3 : IO Unit := do
+  let S := Mat.ofList2x2 5 2 2 3
+  let evs := Mat.eigenvalues2 S
+  IO.println s!"Symmetric [[5,2],[2,3]]: evs={evs} (expect all real)"
 
--- Verify Classification data
-#check JordanType
-#check SpectralPartition
-#check Signature
-#check segreCharacteristic
-
--- Verify Theorems
-#check realSpectralTheorem
-#check complexSpectralTheorem
-#check jordanDecomposition
-#check rationalCanonicalFormTheorem
-#check primaryDecomposition
-#check schurTriangularization
-#check classificationComplex
-#check classificationReal
-#check sylvesterLawOfInertia
-
--- Verify Examples
-#check identityOperatorExample
-#check diagonalExample
-#check jordanBlockExample
-#check nilpotentExample
-
--- Verify Bridges
-#check cyclicSubspace
-#check spectralRadiusTopological
-#check principalAxesTheorem
-#check svdEllipsoid
-#check powerIteration
-#check rayleighQuotient
-
-/-! ## All regression checks passed -/
-
-#eval "Regression checks complete."
+#eval regressionTest3

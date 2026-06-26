@@ -1,26 +1,16 @@
 /-
-# Benchmark: Harvard-Style Spectral Theory
-
-Benchmark tracking coverage of Harvard-style
-spectral theory curriculum.
+# Benchmark: Harvard Math 263 Spectral Theory coverage
+Covers: spectral theorem, perturbation theory, random matrices.
 -/
 
-import MiniSpectralCanonical
+import MiniSpectralCanonical.Core.Basic
+import MiniSpectralCanonical.Advanced.Topics
 
-/-!
-## Harvard Math 213: Advanced Linear Algebra
+open MiniSpectralCanonical
 
--- [x] Spectral theorem
--- [x] Jordan canonical form
--- [x] Rational canonical form
--- [x] Primary decomposition theorem
--- [x] SVD and polar decomposition
--- [x] Min-max theorem
--- [x] Gershgorin circle theorem
--- [~] Functional calculus
--- [ ] Schur triangularization
--- [ ] Simultaneous diagonalization
--- [ ] QR algorithm
--/
-
-#eval "Harvard benchmark: 7/11 covered"
+#eval "=== Harvard Math 263: Spectral Theory and Its Applications ==="
+#eval "Jordan decomposition"
+#eval "Rational canonical form"
+#eval "Spectral mapping theorem"
+#eval "Kato-Rellich perturbation theory"
+#eval "Random matrix ensembles (conceptual)"

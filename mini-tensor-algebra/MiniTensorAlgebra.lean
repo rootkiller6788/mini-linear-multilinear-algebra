@@ -21,3 +21,23 @@ import MiniTensorAlgebra.Bridges.ToAlgebra
 import MiniTensorAlgebra.Bridges.ToGeometry
 import MiniTensorAlgebra.Bridges.ToTopology
 import MiniTensorAlgebra.Bridges.ToComputation
+
+/-! ## Module Verification -/
+
+open MiniTensorAlgebra
+
+/-- Quick module integrity check. -/
+def moduleVerification : List Bool :=
+  [ tensProdDim 2 3 == 6
+  , symPowDim 3 2 == 6
+  , extPowDim 4 2 == 6
+  , totalExtDim 3 == 8
+  , sumPascalRow 4 == 16
+  , det2x2 1 2 3 4 == -2
+  , trace2x2 1 2 3 4 == 5
+  , tor1ZmZn 4 6 == 2
+  , pascalRow 3 == [1, 3, 3, 1]
+  , mixTensDim 4 1 3 == 256
+  ]
+
+#eval "Module verification: " ; moduleVerification.all id

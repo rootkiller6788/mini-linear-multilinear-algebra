@@ -75,6 +75,8 @@ def iso_identity_test : LinearIsomorphism (fnSpace Field.trivial 2) (fnSpace Fie
 
 def testMap : LinearMap (fnSpace Field.trivial 1) (fnSpace Field.trivial 1) where
   mapping f := f
+  additive _ _ := rfl
+  homogeneous _ _ := rfl
 
 def iso_test_map : LinearIsomorphism (fnSpace Field.trivial 1) (fnSpace Field.trivial 1) where
   toMap    := testMap

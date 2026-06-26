@@ -1,44 +1,28 @@
-/-
-# MiniMultilinearForm.Benchmark.SymmetricBench
-
-Benchmarks for symmetric bilinear form operations.
--/
-
-import MiniMultilinearForm.Symmetric.Diagonalization
+import MiniMultilinearForm.Core.Basic
 
 namespace MiniMultilinearForm.Benchmark
 
 open MiniMultilinearForm
-open MiniVectorSpaceCore
 
-/-! ## Benchmark: Diagonalization -/
+variable {F : Field}
 
-/-- Benchmark diagonalization of a symmetric bilinear form. -/
-def bench_diagonalization (n : Nat) (iters : Nat) : IO Unit :=
-  IO.println s!"Diagonalization benchmark: n={n}, {iters} iterations (stub)"
+/-- Symmetric bilinear form storage: only need upper triangular part.
+    For an n×n symmetric matrix, store n(n+1)/2 entries instead of n². -/
+def symmetricStorageSize (n : Nat) : Nat := n * (n + 1) / 2
 
-/-! ## Benchmark: Signature Computation -/
+/-- For n=10: 10*11/2 = 55 entries vs 100 for general matrix (45% savings). -/
+example : symmetricStorageSize 10 = 55 := by
+  unfold symmetricStorageSize; rfl
 
-/-- Benchmark signature computation. -/
-def bench_signature (n : Nat) (iters : Nat) : IO Unit :=
-  IO.println s!"Signature computation benchmark: n={n}, {iters} iterations (stub)"
+/-- Diagonalization of symmetric n×n matrix via Jacobi method:
+    O(n³) operations per sweep, typically needs O(log(1/ε)) sweeps. -/
+def diagonalizationComplexity (n : Nat) : Nat := n * n * n
 
-/-! ## Benchmark: Radical Computation -/
+/-- Cholesky decomposition complexity: (1/3)·n³ + O(n²) operations. -/
+def choleskyComplexity (n : Nat) : Nat := n * n * n / 3
 
-/-- Benchmark radical computation. -/
-def bench_radical (n : Nat) (iters : Nat) : IO Unit :=
-  IO.println s!"Radical computation benchmark: n={n}, {iters} iterations (stub)"
+/-- LDL^T decomposition for symmetric indefinite: same as Cholesky but
+    with pivoting, O(n³). -/
+def ldltComplexity (n : Nat) : Nat := n * n * n
 
-/-! ## Benchmark: Orthogonal Complement -/
-
-/-- Benchmark orthogonal complement computation. -/
-def bench_orthogonalComplement (n k : Nat) (iters : Nat) : IO Unit :=
-  IO.println s!"Orthogonal complement benchmark: n={n}, k={k}, {iters} iterations (stub)"
-
-/-! ## Benchmark: Nondegeneracy Check -/
-
-/-- Benchmark nondegeneracy check. -/
-def bench_nondegeneracy (n : Nat) (iters : Nat) : IO Unit :=
-  IO.println s!"Nondegeneracy check benchmark: n={n}, {iters} iterations (stub)"
-
-#eval "Benchmark.SymmetricBench: symmetric form benchmarks"
+end MiniMultilinearForm.Benchmark

@@ -38,10 +38,10 @@ open MiniVectorSpaceCore
 #check LinearMap.comp
 
 -- Verify LinearIso
-#check LinearIso
+#check LinearIsomorphism
 
--- Verify VSEquivalence
-#check VSEquivalence
+-- Verify VectorSpaceEquivalence
+#check VectorSpaceEquivalence
 
 -- Verify vector space axioms
 #check addAssoc

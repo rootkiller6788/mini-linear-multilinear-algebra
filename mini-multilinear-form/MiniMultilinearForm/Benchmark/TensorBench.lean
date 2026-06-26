@@ -1,44 +1,37 @@
-/-
-# MiniMultilinearForm.Benchmark.TensorBench
-
-Benchmarks for tensor product operations.
--/
-
-import MiniMultilinearForm.TensorProduct.Universal
+import MiniMultilinearForm.Core.Basic
 
 namespace MiniMultilinearForm.Benchmark
 
 open MiniMultilinearForm
-open MiniVectorSpaceCore
 
-/-! ## Benchmark: Tensor Product Construction -/
+variable {F : Field}
 
-/-- Benchmark construction of tensor product spaces. -/
-def bench_tensorProductConstruction (n m : Nat) (iters : Nat) : IO Unit :=
-  IO.println s!"Tensor product construction benchmark: n={n}, m={m}, {iters} iterations (stub)"
+/-- Tensor product V⊗W: dimension = dim(V)·dim(W).
+    Storage: for V=F^m, W=F^n, the tensor product space has dimension m·n. -/
+def tensorProductDimension (m n : Nat) : Nat := m * n
 
-/-! ## Benchmark: Elementary Tensor Operations -/
+/-- For m=n=10: dim = 100 (a 10×10 matrix space). -/
+example : tensorProductDimension 10 10 = 100 := by
+  unfold tensorProductDimension; rfl
 
-/-- Benchmark operations on elementary tensors v⊗w. -/
-def bench_elementaryTensorOps (n : Nat) (iters : Nat) : IO Unit :=
-  IO.println s!"Elementary tensor ops benchmark: n={n}, {iters} iterations (stub)"
+/-- Tensor product of two maps: f⊗g on V1⊗W1 → V2⊗W2.
+    Represented by Kronecker product of matrices: size (m1·n1)×(m2·n2). -/
+def kroneckerSize (m1 n1 m2 n2 : Nat) : Nat := (m1 * m2) * (n1 * n2)
 
-/-! ## Benchmark: Universal Property Factorizations -/
+/-- Tensor contraction: C_{ij} = ∑_k T_{ik} ⊗ U_{kj}.
+    Complexity: O(m·n·p) for T:m×n, U:n×p. -/
+def tensorContractionComplexity (m n p : Nat) : Nat := m * n * p
 
-/-- Benchmark factoring bilinear maps through tensor product. -/
-def bench_universalProperty (n m : Nat) (iters : Nat) : IO Unit :=
-  IO.println s!"Universal property benchmark: n={n}, m={m}, {iters} iterations (stub)"
+/-- Symmetric power S^k(V): dimension = C(n+k-1, k) for dim(V)=n.
+    Much smaller than tensor power n^k. -/
+def symmetricPowerDimension (n k : Nat) : Nat :=
+  -- dim(S^k(V)) when dim(V) = n
+  -- = C(n+k-1, k) = (n+k-1)!/(k!(n-1)!)
+  -- Simplified formula for small k
+  Nat.choose (n + k - 1) k
 
-/-! ## Benchmark: Kronecker Product -/
+/-- Exterior power Λ^k(V): dimension = C(n, k) for dim(V)=n.
+    dim(Λ^k(F^n)) = binomial(n, k). -/
+def exteriorPowerDimension (n k : Nat) : Nat := Nat.choose n k
 
-/-- Benchmark Kronecker product computation. -/
-def bench_kroneckerProduct (m n p q : Nat) (iters : Nat) : IO Unit :=
-  IO.println s!"Kronecker product benchmark: m={m}, n={n}, p={p}, q={q}, {iters} iterations (stub)"
-
-/-! ## Benchmark: Natural Isomorphism -/
-
-/-- Benchmark natural isomorphism transformations. -/
-def bench_naturalIsomorphism (n : Nat) (iters : Nat) : IO Unit :=
-  IO.println s!"Natural isomorphism benchmark: n={n}, {iters} iterations (stub)"
-
-#eval "Benchmark.TensorBench: tensor product benchmarks"
+end MiniMultilinearForm.Benchmark

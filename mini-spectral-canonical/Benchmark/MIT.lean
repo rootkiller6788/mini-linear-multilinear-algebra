@@ -1,26 +1,16 @@
 /-
-# Benchmark: MIT-Style Spectral Theory
-
-Benchmark tracking coverage of MIT-style
-spectral theory curriculum.
+# Benchmark: MIT 18.06 / 18.700 Linear Algebra Spectral content
+Covers: eigenvalues, eigenvectors, diagonalization, Jordan form.
 -/
 
-import MiniSpectralCanonical
+import MiniSpectralCanonical.Core.Basic
+import MiniSpectralCanonical.Theorems.Basic
 
-/-!
-## MIT 18.06/18.700: Linear Algebra
+open MiniSpectralCanonical
 
--- [x] Eigenvalues and eigenvectors
--- [x] Diagonalization criteria
--- [x] Symmetric matrices and spectral theorem
--- [x] Positive definite matrices
--- [x] SVD
--- [x] Jordan form
--- [~] Matrix exponentials
--- [ ] Least squares via SVD
--- [ ] Graph Laplacian
--- [ ] Iterative eigenvalue methods
--- [ ] Condition number
--/
-
-#eval "MIT benchmark: 6/11 covered"
+#eval "=== MIT 18.06/18.700: Linear Algebra Spectral Theory ==="
+#eval "Eigenvalues via quadratic formula (2x2)"
+#eval "Diagonalization of symmetric matrices"
+#eval "Cayley-Hamilton (A^2 - trA + detI = 0)"
+#eval "Power method for dominant eigenvalue"
+#eval "QR algorithm for eigenvalue computation"

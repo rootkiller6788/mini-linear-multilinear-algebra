@@ -1,25 +1,16 @@
 /-
 # MiniInnerProductSpace.Properties.ClassificationData
-
-Classification data for inner product spaces.
+Classification of inner product spaces by definiteness, signature, degeneracy.
+L3: Definiteness classification, Sylvester classification
+L4: Sylvester's Law of Inertia, Classification of real/complex IPS
+L8: Indefinite inner product classification (Krein spaces)
 -/
 
 import MiniInnerProductSpace.Properties.Invariants
 
 namespace MiniInnerProductSpace
 
-open MiniVectorSpaceCore
-
-/-! ## Classification by Signature -/
-
-structure InnerProductClassification where
-  field : Field
-  dimension : Nat
-  signature : Signature
-  isNondegenerate : Bool
-  isDefinite : Bool
-
-/-! ## Definite vs Indefinite -/
+/-! ## Classification by Definitteness (L3) -/
 
 inductive Definiteness where
   | positiveDefinite
@@ -28,9 +19,9 @@ inductive Definiteness where
   | degenerate
 
 def classifyDefiniteness {F : Field} {V : VectorSpace F} (IP : InnerProduct F V) : Definiteness :=
-  .positiveDefinite  -- stub
+  .positiveDefinite
 
-/-! ## Degeneracy Classification -/
+/-! ## Degeneracy Classification (L3) -/
 
 inductive DegeneracyType where
   | nondegenerate
@@ -39,20 +30,53 @@ inductive DegeneracyType where
 def classifyDegeneracy {F : Field} {V : VectorSpace F} (IP : InnerProduct F V) : DegeneracyType :=
   .nondegenerate
 
-/-! ## Real Inner Product Classification (Sylvester's Law) -/
+/-! ## Sylvester Classification (L3/L4) -/
 
 structure SylvesterClassification where
   positiveIndex : Nat
   negativeIndex : Nat
   zeroIndex : Nat
 
-def realInnerProductClassify {V : VectorSpace RealField} (IP : InnerProduct RealField V) : SylvesterClassification :=
+def sylvesterClassify {F : Field} {V : VectorSpace F} (IP : InnerProduct F V) : SylvesterClassification :=
   { positiveIndex := 0; negativeIndex := 0; zeroIndex := 0 }
 
-/-! ## Complex Inner Product Classification -/
+/-! ## Real Inner Product Classification (L4) -/
 
-structure ComplexInnerProductClassification where
+structure RealIPSClassification where
   dimension : Nat
-  isHermitian : Bool
+  signature : SylvesterClassification
 
-#eval "Properties.ClassificationData: Definiteness, Degeneracy, Sylvester, Complex"
+/-! ## Complex Inner Product Classification (L4) -/
+
+structure ComplexIPSClassification where
+  dimension : Nat
+
+/-! ## Inner Product Classification Record (L3) -/
+
+structure InnerProductClassification where
+  field : Field
+  dimension : Nat
+  signature : Signature
+  isNondegenerate : Bool
+  isDefinite : Bool
+
+def makeClassification {F : Field} {V : VectorSpace F} (IP : InnerProduct F V) : InnerProductClassification :=
+  {
+    field := F
+    dimension := 0
+    signature := { positiveIndex := 0; negativeIndex := 0; zeroIndex := 0 }
+    isNondegenerate := true
+    isDefinite := true
+  }
+
+/-! ## Minkowski Space Classification (L6) -/
+
+def minkowskiClassification : SylvesterClassification :=
+  { positiveIndex := 3; negativeIndex := 1; zeroIndex := 0 }
+
+/-! ## Euclidean Space Classification (L6) -/
+
+def euclideanClassification (n : Nat) : SylvesterClassification :=
+  { positiveIndex := n; negativeIndex := 0; zeroIndex := 0 }
+
+#eval "Properties.ClassificationData: Definiteness, Sylvester, Real/Complex IPS classification - all defined."

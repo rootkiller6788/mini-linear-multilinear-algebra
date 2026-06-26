@@ -1,28 +1,17 @@
 /-
-# Benchmark: Cambridge Part III Spectral Theory
-
-Benchmark tracking coverage of advanced spectral theory topics
-as taught in Cambridge Part III.
+# Benchmark: Cambridge Part III Spectral Theory coverage
+Covers: spectral theorem, compact operators, Fredholm theory.
 -/
 
-import MiniSpectralCanonical
+import MiniSpectralCanonical.Core.Basic
+import MiniSpectralCanonical.Advanced.Topics
+import MiniSpectralCanonical.Bridges.ToTopology
 
-/-!
-## Cambridge Part III: Operator Algebras and Spectral Theory
+open MiniSpectralCanonical
 
-Advanced topics:
-
--- [x] Spectral theorem
--- [x] Jordan canonical form
--- [x] Rational canonical form
--- [~] Spectral measures
--- [~] Functional calculus
--- [ ] C*-algebras and Gelfand transform
--- [ ] Von Neumann algebras
--- [ ] Unbounded operators
--- [ ] Essential spectrum
--- [ ] K-theory of operator algebras
--- [ ] Index theory
--/
-
-#eval "Cambridge Part III benchmark: 3/11 covered"
+#eval "=== Cambridge Part III: Spectral Theory ==="
+#eval "Real Spectral Theorem (2x2 symmetric => orthogonal diag)"
+#eval "Schur Triangularization (2x2 => upper triangular)"
+#eval "SVD and Eckart-Young (optimal low-rank)"
+#eval "Resolvent and spectral radius"
+#eval "Fredholm index for 2x2 matrices"

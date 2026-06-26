@@ -78,8 +78,7 @@ open MiniObjectKernel
 /-! ## Morphisms: LinearMap -/
 
 #eval "── Morphisms: LinearMap ──"
-def lm : LinearMap testVS testVS where
-  mapping := fun x => x + 1
+def lm : LinearMap testVS testVS := LinearMap.id testVS
 #eval lm.mapping 5
 
 def lmId := LinearMap.id testVS
@@ -88,12 +87,12 @@ def lmId := LinearMap.id testVS
 /-! ## Morphisms: LinearIso -/
 
 #eval "── Morphisms: LinearIso ──"
-#check LinearIso testVS testVS
+#check LinearIsomorphism testVS testVS
 
-/-! ## Morphisms: VSEquivalence -/
+/-! ## Morphisms: VectorSpaceEquivalence -/
 
-#eval "── Morphisms: VSEquivalence ──"
-#check VSEquivalence testVS testVS
+#eval "── Morphisms: VectorSpaceEquivalence ──"
+#check VectorSpaceEquivalence testVS testVS
 
 /-! ## Constructions/Properties/Theorems/Bridges: stubs imported ──
 

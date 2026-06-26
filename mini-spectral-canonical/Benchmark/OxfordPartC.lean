@@ -1,25 +1,17 @@
 /-
-# Benchmark: Oxford Part C Spectral Theory
-
-Benchmark tracking coverage of advanced spectral theory
-as taught in Oxford Part C.
+# Benchmark: Oxford Part C C2 Category Theory / C3 Algebraic Topology
+Covers: F[t]-module structure, spectral sequences, K-theory.
 -/
 
-import MiniSpectralCanonical
+import MiniSpectralCanonical.Core.Basic
+import MiniSpectralCanonical.Bridges.ToAlgebra
+import MiniSpectralCanonical.Research.Frontiers
 
-/-!
-## Oxford Part C: Spectral Theory and Operator Algebras
+open MiniSpectralCanonical
 
--- [x] Spectral theorem (bounded self-adjoint)
--- [x] Jordan decomposition
--- [x] Polar decomposition
--- [~] Functional calculus
--- [~] Spectral measures
--- [ ] Continuous functional calculus
--- [ ] Borel functional calculus
--- [ ] Essential spectrum
--- [ ] Fredholm operators and index
--- [ ] Spectral flow
--/
-
-#eval "Oxford Part C benchmark: 3/10 covered"
+#eval "=== Oxford Part C: Category Theory & Algebraic Topology ==="
+#eval "F[t]-module structure of vector spaces"
+#eval "Primary decomposition via CRT"
+#eval "Spectral triples (Connes)"
+#eval "Operator K-theory"
+#eval "Derived spectral stacks"

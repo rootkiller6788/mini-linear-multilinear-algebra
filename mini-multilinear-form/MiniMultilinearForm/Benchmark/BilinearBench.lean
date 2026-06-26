@@ -1,44 +1,27 @@
-/-
-# MiniMultilinearForm.Benchmark.BilinearBench
-
-Benchmarks for bilinear map and bilinear form operations.
--/
-
-import MiniMultilinearForm.Bilinear.Basic
+import MiniMultilinearForm.Core.Basic
 
 namespace MiniMultilinearForm.Benchmark
 
 open MiniMultilinearForm
-open MiniVectorSpaceCore
 
-/-! ## Benchmark: Bilinear Map Evaluation -/
+variable {F : Field}
 
-/-- Benchmark evaluation of a bilinear map on random vectors. -/
-def bench_bilinearMapEval (iters : Nat) : IO Unit :=
-  IO.println s!"BilinearMap eval benchmark: {iters} iterations (stub)"
+/-- Benchmark: bilinear form evaluation timing is O(n²).
+    For an n×n matrix, evaluating B(x,y) = ∑ B_{ij}·x_i·y_j requires n² multiplications and n²-1 additions. -/
+def benchEvalComplexity (n : Nat) : Nat := n * n
 
-/-! ## Benchmark: Zero Map Creation -/
+/-- Count operations for evaluating a bilinear form: n² multiplications + (n²-1) additions. -/
+def countOperationsEval (n : Nat) : Nat := 2 * n * n - 1
 
-/-- Benchmark creation of zero bilinear maps. -/
-def bench_zeroMapCreation (iters : Nat) : IO Unit :=
-  IO.println s!"Zero map creation benchmark: {iters} iterations (stub)"
+/-- For n=10, operation count = 2*100-1 = 199. -/
+example : countOperationsEval 10 = 199 := by
+  unfold countOperationsEval; rfl
 
-/-! ## Benchmark: Addition of Bilinear Maps -/
+/-- Memory usage for storing an n×n bilinear form matrix: n² field elements. -/
+def memoryUsage (n : Nat) : Nat := n * n
 
-/-- Benchmark addition of bilinear maps. -/
-def bench_addBilinearMaps (iters : Nat) : IO Unit :=
-  IO.println s!"Add bilinear maps benchmark: {iters} iterations (stub)"
+/-- Benchmark: symmetric form evaluation can save ~50% operations by
+    only computing the upper triangular part and doubling. -/
+def countOperationsSymmetricEval (n : Nat) : Nat := n + (n * (n - 1)) / 2
 
-/-! ## Benchmark: Symmetry Check -/
-
-/-- Benchmark checking symmetry of a bilinear form. -/
-def bench_symmetryCheck (n : Nat) (iters : Nat) : IO Unit :=
-  IO.println s!"Symmetry check benchmark: n={n}, {iters} iterations (stub)"
-
-/-! ## Benchmark: Alternation Check -/
-
-/-- Benchmark checking alternation of a bilinear form. -/
-def bench_alternationCheck (n : Nat) (iters : Nat) : IO Unit :=
-  IO.println s!"Alternation check benchmark: n={n}, {iters} iterations (stub)"
-
-#eval "Benchmark.BilinearBench: bilinear map benchmarks"
+end MiniMultilinearForm.Benchmark

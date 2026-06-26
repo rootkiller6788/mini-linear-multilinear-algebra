@@ -1,19 +1,16 @@
 /-
 # MiniInnerProductSpace
+Root module for the inner product space sub-package.
+Re-exports all sub-packages for convenience.
 
-The inner product space sub-package — defines InnerProduct, Norm,
-Orthogonality, OrthonormalBasis, Gram-Schmidt, Adjoint, Unitary,
-OrthogonalProjection, and bridges to algebra, topology, geometry,
-and computation.
-
-## Sub-packages
-- `Core`         — InnerProduct, Norm, Orthogonality, OrthonormalBasis, Gram-Schmidt, Adjoint
-- `Morphisms`    — IsometricMap, InnerProductIso, Equivalence
-- `Constructions` — Products, Subobjects, Quotients, Universal
-- `Properties`   — Invariants, Preservation, ClassificationData
-- `Theorems`     — Basic, UniversalProperties, Classification, Main
-- `Examples`     — Standard, Counterexamples
-- `Bridges`      — ToAlgebra, ToTopology, ToGeometry, ToComputation
+Sub-packages:
+- Core: InnerProduct, Norm, Orthogonality, Gram-Schmidt, Adjoint
+- Morphisms: IsometricMap, InnerProductIso, Equivalence
+- Constructions: Products, Subobjects, Quotients, Universal
+- Properties: Invariants, Preservation, ClassificationData
+- Theorems: Basic, UniversalProperties, Classification, Main
+- Examples: Standard, Counterexamples
+- Bridges: ToAlgebra, ToTopology, ToGeometry, ToComputation
 -/
 
 import MiniInnerProductSpace.Core.Basic

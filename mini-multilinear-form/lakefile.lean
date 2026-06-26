@@ -7,5 +7,6 @@ package «mini-multilinear-form» where
 lean_lib «MiniMultilinearForm» where
   roots := #[`MiniMultilinearForm]
 
-require «mini-vector-space-core» from "../mini-vector-space-core"
-require «mini-linear-transformation» from "../mini-linear-transformation"
+-- Self-contained module: Field and VectorSpace types defined internally.
+-- Cross-module references to mini-vector-space-core and mini-linear-transformation
+-- are NOT needed because all foundational types are defined in Core/Basic.lean.

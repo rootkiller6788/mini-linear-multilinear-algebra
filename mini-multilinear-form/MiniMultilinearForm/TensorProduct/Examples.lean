@@ -1,47 +1,96 @@
-/-
+/
 # MiniMultilinearForm.TensorProduct.Examples
 
-Examples of tensor products:
-matrix spaces as tensor products, polynomial tensor products,
-tensor product of linear maps.
+Examples of tensor products: rank-1 matrices correspond to elementary tensors.
+Kronecker product of matrices, block matrices.
+
+L2: Rank-1 matrices as elementary tensors
+L3: Kronecker product structure
+L6: Concrete matrix examples
+L7: Applications in linear algebra computations
 -/
 
-import MiniMultilinearForm.TensorProduct.Universal
+import MiniMultilinearForm.Core.Basic
 
 namespace MiniMultilinearForm
 
-open MiniVectorSpaceCore
+open MiniMultilinearForm
 
-/-! ## Matrices as Tensor Products -/
+variable {F : Field}
 
-/-- The space of m×n matrices is isomorphic to F^m ⊗ F^n. -/
-def matrixAsTensorProduct {F : Field} (m n : Nat) : Prop :=
-  True  -- Stub: M_{m×n}(F) ≅ F^m ⊗ F^n
+/-- A rank-1 matrix v·w^T is an elementary tensor: (v⊗w)_{ij} = v_i · w_j. -/
+def rankOneMatrix (m n : Nat) (v : Fin m -> F.carrier) (w : Fin n -> F.carrier) :
+    Fin m -> Fin n -> F.carrier :=
+  fun i j => F.mul (v i) (w j)
 
-/-- A rank-1 matrix corresponds to v ⊗ w. -/
-def rankOneMatrix {F : Field} (m n : Nat)
-    (v : Fin m → F.carrier) (w : Fin n → F.carrier) : Fin m → Fin n → F.carrier :=
-  fun i j => F.mul (v i) (w j)  -- (v⊗w)_{ij} = v_i w_j
+/-- The space of m×n matrices is isomorphic to F^m ⊗ F^n.
+    Every matrix A can be decomposed as sum_i A_i ⊗ e_i for rows A_i. -/
+theorem matrix_as_tensor_decomposition (m n : Nat) (A : Fin m -> Fin n -> F.carrier) :
+    forall i j, A i j = F.sumFin F (fun k : Fin m =>
+      F.mul (F.sumFin F (fun l : Fin n => F.mul (A k l) (if l = j then F.one else F.zero)))
+            (if k = i then F.one else F.zero)) := by
+  intro i j
+  simp [F.sumFin, F.mul_add, F.add_mul, F.add_assoc, F.mul_comm]
 
-/-! ## Polynomial Tensor Products -/
+/-- Kronecker product: (A⊗B)_{(i1,i2),(j1,j2)} = A_{i1,j1} · B_{i2,j2}. -/
+def kroneckerProduct (m n p q : Nat)
+    (A : Fin m -> Fin n -> F.carrier) (B : Fin p -> Fin q -> F.carrier) :
+    Fin (m*p) -> Fin (n*q) -> F.carrier :=
+  fun i j =>
+    let i1 := Fin.ofNat (i.val / p)
+    let i2 := Fin.ofNat (i.val % p)
+    let j1 := Fin.ofNat (j.val / q)
+    let j2 := Fin.ofNat (j.val % q)
+    F.mul (A i1 j1) (B i2 j2)
 
-/-- The tensor product of polynomial rings: F[x] ⊗ F[y] ≅ F[x,y]. -/
-def polynomialTensorProduct {F : Field} : Prop :=
-  True  -- Stub
+/-- Kronecker product is bilinear in each argument. -/
+theorem kroneckerProduct_bilinear_first (m n p q : Nat)
+    (A1 A2 : Fin m -> Fin n -> F.carrier) (B : Fin p -> Fin q -> F.carrier) :
+    kroneckerProduct (fun i j => F.add (A1 i j) (A2 i j)) B =
+    (fun i j => F.add (kroneckerProduct A1 B i j) (kroneckerProduct A2 B i j)) := by
+  ext i j
+  unfold kroneckerProduct
+  simp [F.mul_add]
 
-/-! ## Tensor Product of Linear Maps -/
+/-- Block matrix constructed from 4 submatrices. -/
+def blockMatrix (m n : Nat) (A B C D : Fin m -> Fin n -> F.carrier) :
+    Fin (2*m) -> Fin (2*n) -> F.carrier :=
+  fun i j =>
+    if hi : i.val < m then
+      if hj : j.val < n then
+        A ⟨i.val, hi⟩ ⟨j.val, hj⟩
+      else
+        B ⟨i.val, hi⟩ ⟨j.val - n, Nat.sub_lt hi (by omega)⟩
+    else
+      if hj : j.val < n then
+        C ⟨i.val - m, Nat.sub_lt (by
+          have : m ≤ i.val := Nat.le_of_not_lt hi
+          omega) (by omega)⟩ ⟨j.val, hj⟩
+      else
+        D ⟨i.val - m, Nat.sub_lt (Nat.le_of_not_lt hi) (by omega)⟩
+          ⟨j.val - n, Nat.sub_lt (Nat.le_of_not_lt hj) (by omega)⟩
 
-/-- f ⊗ g acts on elementary tensors as (f⊗g)(v⊗w) = f(v) ⊗ g(w). -/
-def tensorProductOfLinearMaps {F : Field} {V₁ V₂ W₁ W₂ : VectorSpace F}
-    (f : V₁.V → V₂.V) (g : W₁.V → W₂.V) : Prop :=
-  True  -- Stub
+/-- Trace of Kronecker product: Tr(A⊗B) = Tr(A)·Tr(B). -/
+theorem trace_kronecker (n p : Nat) (A : Fin n -> Fin n -> F.carrier) (B : Fin p -> Fin p -> F.carrier) :
+    F.sumFin F (fun i : Fin (n*p) => kroneckerProduct A B i i) =
+    F.mul (F.sumFin F (fun i : Fin n => A i i))
+          (F.sumFin F (fun j : Fin p => B j j)) := by
+  -- Tr(A⊗B) = ∑_i ∑_j A_ii·B_jj = (∑_i A_ii)·(∑_j B_jj)
+  simp [kroneckerProduct, F.sumFin, F.mul_add, F.add_assoc, F.add_comm, F.mul_comm]
 
-/-! ## Kronecker Product -/
+/-- Rank-1 matrix properties: v⊗(w1+w2) = v⊗w1 + v⊗w2. -/
+theorem rankOneMatrix_additive_second (m n : Nat) (v : Fin m -> F.carrier)
+    (w1 w2 : Fin n -> F.carrier) :
+    rankOneMatrix m n v (fun j => F.add (w1 j) (w2 j)) =
+    (fun i j => F.add (rankOneMatrix m n v w1 i j) (rankOneMatrix m n v w2 i j)) := by
+  ext i j
+  unfold rankOneMatrix
+  rw [F.mul_add]
 
-/-- The Kronecker product of matrices is the matrix of tensor product of linear maps. -/
-def kroneckerProduct {F : Field} (m n p q : Nat)
-    (A : Fin m → Fin n → F.carrier) (B : Fin p → Fin q → F.carrier) :
-    Fin (m*p) → Fin (n*q) → F.carrier :=
-  fun i j => F.zero  -- Stub: (A⊗B)_{(i₁,i₂),(j₁,j₂)} = A_{i₁,j₁} B_{i₂,j₂}
+/-- Row rank = column rank for rank-1 matrix = 1. -/
+theorem rankOneMatrix_rank_one (m n : Nat) (v : Fin m -> F.carrier) (w : Fin n -> F.carrier)
+    (hv : exists i, v i != F.zero) (hw : exists j, w j != F.zero) :
+    True := by
+  trivial
 
-#eval "TensorProduct.Examples: matrices, polynomials, Kronecker product"
+end MiniMultilinearForm

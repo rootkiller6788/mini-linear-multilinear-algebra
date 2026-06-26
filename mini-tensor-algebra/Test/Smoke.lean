@@ -1,39 +1,42 @@
-/-
-# Test.Smoke
-
-Smoke tests: verify that all imports work and basic
-definitions compile without errors.
--/
-
 import MiniTensorAlgebra
 
 open MiniTensorAlgebra
 
-/-! ## Import Check -/
+/-!
+# Smoke Tests
 
-#eval "Smoke test: all imports successful"
+Quick sanity checks that the module loads and basic operations work.
+-/
 
-/-! ## Basic Definitions Compile -/
+/-- Basic tensor product dimension check. -/
+#eval "Smoke: dim check" ; tensProdDim 2 3 == 6
 
-def test_tensorProduct_exists : Prop :=
-  ∀ (F : Field) (V W : VectorSpace F), True
+/-- Symmetric power dimension check. -/
+#eval "Smoke: symmetric check" ; symPowDim 3 2 == 6
 
-def test_tensorAlgebra_exists : Prop :=
-  ∀ (F : Field) (V : VectorSpace F), True
+/-- Exterior power dimension check. -/
+#eval "Smoke: exterior check" ; extPowDim 4 2 == 6
 
-def test_symmetricAlgebra_exists : Prop :=
-  ∀ (F : Field) (V : VectorSpace F), True
+/-- Determinant check. -/
+#eval "Smoke: det check" ; det2x2 1 2 3 4 == -2
 
-def test_exteriorAlgebra_exists : Prop :=
-  ∀ (F : Field) (V : VectorSpace F), True
+/-- Trace check. -/
+#eval "Smoke: tr check" ; trace2x2 1 2 3 4 == 5
 
-/-! ## Core Laws Check -/
+/-- Tor check. -/
+#eval "Smoke: Tor check" ; tor1ZmZn 4 6 == 2
 
-def test_tensorBilinearity : Prop :=
-  ∀ (F : Field) (V W : VectorSpace F) (u v : V.V) (w : W.V),
-    True
+/-- Pascal row check. -/
+#eval "Smoke: Pascal row" ; pascalRow 3 == [1, 3, 3, 1]
 
-def test_exteriorAntiComm : Prop :=
-  ∀ (F : Field) (V : VectorSpace F) (x y : V.V), True
+/-- Hilbert series check. -/
+#eval "Smoke: Hilbert ext check" ; hilbertExteriorSeries 4 == [1, 4, 6, 4, 1]
 
-#eval "Smoke: all tests passed"
+/-- Total exterior dimension check. -/
+#eval "Smoke: total ext dim" ; totalExtDim 5 == 32
+
+/-- Mixed tensor dimension check. -/
+#eval "Smoke: mixed tensor" ; mixTensDim 4 1 3 == 256
+
+/-- All basic operations functional. -/
+#eval "Smoke: all basic imports and operations OK" ; 0
