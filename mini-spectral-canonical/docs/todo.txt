@@ -1,0 +1,23 @@
+MiniSpectralCanonical TODO
+===========================
+
+High Priority:
+[ ] Prove Spectral Theorem (real self-adjoint)
+[ ] Implement Jordan decomposition algorithm
+[ ] Implement rational canonical form computation
+[ ] Fill in primary decomposition proof
+[ ] Implement SVD algorithm
+
+Medium Priority:
+[ ] Functional calculus implementation
+[ ] Schur triangularization
+[ ] Simultaneous diagonalization criteria
+[ ] Cayley-Hamilton theorem proof
+[ ] Eckart-Young theorem (optimal low-rank)
+
+Low Priority:
+[ ] Bridge implementations (ToAlgebra/ToTopology/ToGeometry/ToComputation)
+[ ] Quotient by invariant subspace (fill in)
+[ ] Preservation theorem proofs
+[ ] Counterexamples library expansion
+[ ] Graph Laplacian and spectral clustering

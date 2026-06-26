@@ -1,0 +1,52 @@
+MiniSpectralCanonical Architecture
+==================================
+
+Package: mini-spectral-canonical
+Library: MiniSpectralCanonical
+Namespace: MiniSpectralCanonical
+
+Dependencies:
+  - mini-vector-space-core (VectorSpace, Basis)
+  - mini-linear-transformation (LinearMap, eigenvalues/vectors)
+  - mini-determinant-theory (determinant, characteristic polynomial)
+  - mini-inner-product-space (inner products, self-adjoint, unitary)
+
+Core:
+  Basic.lean    -- Spectral theorem, Jordan/Rational forms, SVD, Polar, spectral radius
+  Objects.lean  -- Object registrations for spectral structures
+  Laws.lean     -- Spectral laws and axioms (stub)
+
+Morphisms:
+  Hom.lean         -- Similarity, UnitaryEquivalence, Congruence
+  Iso.lean         -- SpectralIso, CanonicalFormIso, SVDIso
+  Equivalence.lean -- SpectralEquivalence, JordanEquivalence
+
+Constructions:
+  Products.lean    -- BlockDiagonal, JordanDirectSum, KroneckerProduct
+  Universal.lean   -- Universal properties (Eckart-Young, Cayley-Hamilton)
+  Subobjects.lean  -- InvariantSubspace, Eigenspace, GeneralizedEigenspace
+  Quotients.lean   -- Quotient by invariant subspace
+
+Properties:
+  Invariants.lean         -- Trace, det, characteristic/minimal polynomial, multiplicities
+  Preservation.lean       -- Similarity/unitary/congruence preservation
+  ClassificationData.lean -- JordanType, SpectralPartition, Signature
+
+Theorems:
+  Basic.lean              -- Spectral theorems, Jordan/Rational forms, Primary decomposition
+  UniversalProperties.lean -- Functional calculus, Schur triang., Simultaneous diag.
+  Classification.lean     -- Classification over C/R, Normal ops, Sylvester, Nilpotent
+  Main.lean               -- Aggregated main results (spectralPackage)
+
+Examples:
+  Standard.lean        -- Identity, Diagonal, Jordan, Nilpotent, Symmetric, Projection, Unitary
+  Counterexamples.lean -- Non-diagonalizable, Defective, Non-normal, Rotation
+
+Bridges:
+  ToAlgebra.lean      -- F[t]-module, spectral projections, cyclic subspaces
+  ToTopology.lean     -- Spectral radius, resolvent, Gershgorin topology
+  ToGeometry.lean     -- Principal axes, SVD ellipsoid, Polar geometry
+  ToComputation.lean  -- Power iteration, QR, Rayleigh quotient, spectral clustering
+
+Total .lean modules: 28
+Total files: 45

@@ -1,0 +1,14 @@
+MiniSpectralCanonical Changelog
+================================
+
+v0.1.0 (2026-05-21)
+  - Initial standalone mini-package with full skeleton
+  - Core: Spectral Theorem, Jordan/Rational forms, SVD, Polar, spectral radius
+  - Morphisms: Similarity, UnitaryEquivalence, Congruence, SpectralIso, SVDIso
+  - Constructions: BlockDiagonal, Invariant/Eigen/GeneralizedEigen subspaces
+  - Properties: Trace, det, char/min poly, multiplicities, JordanType, Signature
+  - Theorems: Spectral theorems, Primary decomposition, Classifications, Schur
+  - Examples: Identity, Diagonal, Jordan, Nilpotent, Counterexamples
+  - Bridges: ToAlgebra (F[t]-module), ToTopology (spectral radius), ToGeometry (SVD), ToComputation (QR)
+  - Tests: Smoke, Examples, Regression
+  - Benchmarks: CoreCoverage, Princeton, Cambridge, Harvard, MIT, Oxford

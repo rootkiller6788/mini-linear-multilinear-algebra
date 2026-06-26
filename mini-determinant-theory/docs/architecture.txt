@@ -1,0 +1,50 @@
+MiniDeterminantTheory Architecture
+================================
+
+Package: mini-determinant-theory
+Library: MiniDeterminantTheory
+Namespace: MiniDeterminantTheory
+
+Dependencies:
+  - mini-vector-space-core (VectorSpace, Field)
+  - mini-linear-transformation (LinearMap)
+  - mini-multilinear-form (MultilinearForm)
+
+Core:
+  Basic.lean    -- determinant, eigenvalues, charPoly, diagonalizable, trace
+  Objects.lean  -- Matrix structure, Object instances, registration
+  Laws.lean     -- Determinant axioms (stub)
+
+Morphisms:
+  Hom.lean         -- DeterminantHom (determinant-preserving maps)
+  Iso.lean         -- areSimilar (similarity relation on linear operators)
+  Equivalence.lean -- detEquivalent, spectrumEquivalent
+
+Constructions:
+  Products.lean    -- exteriorPower, wedgeProduct, laplaceExpansion
+  Universal.lean   -- Universal properties (determinant as unique alternating form)
+  Subobjects.lean  -- Invariant subspaces, restricted operators
+  Quotients.lean   -- Quotient by similarity equivalence
+
+Properties:
+  Invariants.lean         -- Determinant, trace, charPoly, eigenvalues
+  Preservation.lean       -- Similarity-invariant properties
+  ClassificationData.lean -- Jordan/Smith normal form data
+
+Theorems:
+  Basic.lean              -- det(I)=1, det(AB)=det(A)det(B), det(A)≠0↔invertible
+  UniversalProperties.lean -- Determinant as unique alternating multilinear form
+  Classification.lean      -- Operator classification by determinant/charPoly
+  Main.lean               -- Cayley-Hamilton, Spectral theorem, Jordan decomposition
+
+Examples:
+  Standard.lean        -- identityDeterminant, zeroDeterminant
+  Counterexamples.lean -- Non-additivity, nilpotent vs zero-det
+
+Bridges:
+  ToAlgebra.lean      -- GL(V), SL(V), determinant as group homomorphism
+  ToTopology.lean     -- Connected components via sign(det), orientation
+  ToGeometry.lean     -- Signed volume, Jacobian, Gram determinant
+  ToComputation.lean  -- LU/Gaussian elimination, numerical algorithms
+
+Total .lean modules: 23

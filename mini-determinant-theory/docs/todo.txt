@@ -1,0 +1,22 @@
+MiniDeterminantTheory TODO
+==========================
+
+High Priority:
+[ ] Implement determinant via exterior powers (Core/Basic.lean)
+[ ] Prove multiplicative property det(AB) = det(A)det(B) (Theorems/Basic.lean)
+[ ] Prove invertibility criterion det(A) ≠ 0 ↔ A invertible (Theorems/Basic.lean)
+[ ] Fill in exterior power construction (Constructions/Products.lean)
+
+Medium Priority:
+[ ] Cayley-Hamilton theorem proof (Theorems/Main.lean)
+[ ] Spectral theorem for symmetric operators (Theorems/Main.lean)
+[ ] Characteristic polynomial as similarity invariant (Properties/Invariants.lean)
+[ ] Jordan canonical form (Theorems/Classification.lean)
+[ ] Determinant of triangular matrices (Theorems/Basic.lean)
+
+Low Priority:
+[ ] Bridge implementations (Bridges/To*.lean)
+[ ] Counterexamples library (Examples/Counterexamples.lean)
+[ ] Laplace expansion proof (Constructions/Products.lean)
+[ ] Classification data (Properties/ClassificationData.lean)
+[ ] Determinant algorithms (Bridges/ToComputation.lean)
